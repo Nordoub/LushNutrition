@@ -18,6 +18,12 @@ const initialMessages = [
     description: "D2",
     image: require("../assets/mosh.jpg"),
   },
+  {
+    id: 3,
+    title: "T3",
+    description: "D3",
+    image: require("../assets/mosh.jpg"),
+  },
 ];
 
 function MessagesScreen(props) {

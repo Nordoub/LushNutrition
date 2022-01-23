@@ -11,7 +11,9 @@ function ListItem({
   image,
   IconComponent,
   onPress,
+  onPressIcon,
   renderRightActions,
+  iconName = "chevron-right",
 }) {
   return (
     <Swipeable renderRightActions={renderRightActions}>
@@ -31,9 +33,10 @@ function ListItem({
           </View>
 
           <MaterialCommunityIcons
-            name="chevron-right"
+            name={iconName}
             size={30}
             color={colors.medium}
+            onPress={onPressIcon}
           />
         </View>
       </TouchableHighlight>

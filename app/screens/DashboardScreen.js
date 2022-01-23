@@ -1,42 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
-import * as Yup from "yup";
+import { FlatList, StyleSheet } from "react-native";
+import Screen from "../components/Screen";
+import AppText from "../components/AppText";
+import ListItemSeperator from "../components/lists/ListItemSeperator";
+import { ListItem, ListItemDeleteAction } from "../components/lists";
 import CircularProgress from "react-native-circular-progress-indicator";
 
-import {
-  AppForm as Form,
-  AppFormField as FormField,
-  AppFormPicker as Picker,
-  SubmitButton,
-} from "../components/forms";
-import Screen from "../components/Screen";
+import { days, months } from "../config/dates";
+import { maaltijden } from "../config/maaltijden";
 
-const validationSchema = Yup.object().shape({
-  title: Yup.string().required().min(1).label("Title"),
-  price: Yup.number().required().min(1).max(10000).label("Price"),
-  description: Yup.string().label("Description"),
-  category: Yup.object().required().nullable().label("Category"),
-});
-
-const categories = [
-  { label: "Furniture", value: 1 },
-  { label: "Clothing", value: 2 },
-  { label: "Camera", value: 3 },
-];
+let today = new Date();
 
 function DashboardScreen() {
-  const [value, setValue] = useState(80);
+  const [value, setValue] = useState(0);
   const [maxValue, setMaxValue] = useState(100);
-  // useEffect(() => {
-  //   setValue(value + 1);
-  //   console.log("test");
-  // });
+  const [date, setDate] = useState(
+    today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()
+  );
+  const [translatedDate, setTranslatedDate] = useState(
+    days[today.getDay()] +
+      ", " +
+      today.getDate() +
+      " " +
+      months[today.getMonth()]
+  );
 
   return (
     <Screen style={styles.container}>
       <CircularProgress
         value={value <= maxValue ? value : maxValue}
-        radius={120}
+        radius={110}
         duration={2000}
         // textColor={"#ecf0f1"}
         maxValue={maxValue}
@@ -48,14 +41,44 @@ function DashboardScreen() {
         inActiveStrokeWidth={20}
         activeStrokeWidth={10}
       />
+      <AppText style={styles.date}>{translatedDate}</AppText>
+      <FlatList
+        data={maaltijden}
+        style={styles.items}
+        keyExtractor={(maaltijd) => maaltijd.id.toString()}
+        renderItem={({ item }) => (
+          <ListItem
+            title={item.title}
+            subtitle={item.description}
+            image={item.image}
+            onPress={() => setValue(value + 15)}
+            renderRightActions={() => (
+              <ListItemDeleteAction onPress={() => handleDelete(item)} />
+            )}
+          />
+        )}
+        ItemSeparatorComponent={ListItemSeperator}
+      />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    paddingTop: 10,
     alignSelf: "center",
+    width: "100%",
+    alignItems: "center",
+  },
+  items: {
+    // flex: 1,
+    width: "100%",
+    paddingTop: 10,
+  },
+  date: {
+    fontSize: 20,
+    color: "black",
+    opacity: 0.5,
   },
 });
 

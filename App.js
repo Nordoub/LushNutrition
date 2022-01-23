@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
 
 import Screen from "./app/components/Screen";
 import LoginScreen from "./app/screens/LoginScreen";
@@ -16,6 +17,7 @@ import SetupScreen from "./app/screens/SetupScreen";
 import DashboardScreen from "./app/screens/DashboardScreen";
 import MessagesScreen from "./app/screens/MessagesScreen";
 import ViewImageScreen from "./app/screens/ViewImageScreen";
+import AddMealScreen from "./app/screens/AddMealScreen";
 
 const Stack = createStackNavigator();
 
@@ -40,6 +42,7 @@ const TabNavigator = () => (
     <Tab.Screen name="Account" component={AccountScreen} />
     <Tab.Screen name="Messages" component={MessagesScreen} />
     <Tab.Screen name="View" component={ViewImageScreen} />
+    <Tab.Screen name="AddMeal" component={AddMealScreen} />
   </Tab.Navigator>
 );
 
@@ -48,10 +51,11 @@ export default function App() {
     // <NavigationContainer>
     //   <AuthNavigator />
     // </NavigationContainer>
-
-    <NavigationContainer>
-      <TabNavigator />
-    </NavigationContainer>
-    // ben bij stap 2
+    <>
+      <NavigationContainer>
+        <TabNavigator />
+      </NavigationContainer>
+      <Toast />
+    </>
   );
 }
