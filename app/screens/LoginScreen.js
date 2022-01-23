@@ -4,6 +4,8 @@ import * as Yup from "yup";
 
 import Screen from "../components/Screen";
 import { AppForm, AppFormField, SubmitButton } from "../components/forms";
+import AppText from "../components/AppText";
+import AppButton from "../components/AppButton";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -40,6 +42,13 @@ function LoginScreen(props) {
         />
         <SubmitButton title="login" />
       </AppForm>
+
+      <AppText
+        style={styles.register}
+        onPress={() => props.navigation.navigate("Register")}
+      >
+        Account aanmaken
+      </AppText>
     </Screen>
   );
 }
@@ -54,6 +63,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 50,
     marginBottom: 20,
+  },
+  register: {
+    alignSelf: "center",
+    margin: 20,
   },
 });
 
