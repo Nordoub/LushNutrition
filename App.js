@@ -13,6 +13,9 @@ import ListingsScreen from "./app/screens/ListingsScreen";
 import ListingEditScreen from "./app/screens/ListingEditScreen";
 import AccountScreen from "./app/screens/AccountScreen";
 import SetupScreen from "./app/screens/SetupScreen";
+import DashboardScreen from "./app/screens/DashboardScreen";
+import MessagesScreen from "./app/screens/MessagesScreen";
+import ViewImageScreen from "./app/screens/ViewImageScreen";
 
 const Stack = createStackNavigator();
 
@@ -27,12 +30,16 @@ const AuthNavigator = () => (
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => (
   <Tab.Navigator initialRouteName="LoginScreen">
-    <Tab.Screen name="Feed" component={ListingsScreen} />
-    <Tab.Screen name="ListingsEdit" component={ListingEditScreen} />
+    {/* <Tab.Screen name="Feed" component={ListingsScreen} /> */}
+    {/* <Tab.Screen name="ListingsEdit" component={ListingEditScreen} /> */}
     <Tab.Screen name="LoginScreen" component={LoginScreen} />
     <Tab.Screen name="RegisterScreen" component={RegisterScreen} />
     <Tab.Screen name="WelcomeScreen" component={WelcomeScreen} />
     <Tab.Screen name="SetupScreen" component={SetupScreen} />
+    <Tab.Screen name="DashboardScreen" component={DashboardScreen} />
+    <Tab.Screen name="Account" component={AccountScreen} />
+    <Tab.Screen name="Messages" component={MessagesScreen} />
+    <Tab.Screen name="View" component={ViewImageScreen} />
   </Tab.Navigator>
 );
 

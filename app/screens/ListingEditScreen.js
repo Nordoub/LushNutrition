@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import * as Yup from "yup";
+import CircularProgress from "react-native-circular-progress-indicator";
 
 import {
   AppForm as Form,
