@@ -22,10 +22,9 @@ import {
 import Screen from "../components/Screen";
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required().min(1).label("Title"),
-  price: Yup.number().required().min(1).max(10000).label("Price"),
-  description: Yup.string().label("Description"),
-  category: Yup.object().required().nullable().label("Category"),
+  age: Yup.number().required().min(1).max(120).label("Age"),
+  height: Yup.number().required().min(30).max(220).label("Height"),
+  weight: Yup.number().required().min(10).max(300).label("Weight"),
 });
 
 const categories = [
@@ -35,7 +34,12 @@ const categories = [
   { label: "Advanced weight loss", value: 4 },
 ];
 
-function SetupScreen() {
+function SetupScreen({ navigation }) {
+  const submit = (values) => {
+    console.log(values);
+    navigation.navigate("Dashboard");
+  };
+
   return (
     <KeyboardAwareScrollView>
       <Screen style={styles.container}>
@@ -49,10 +53,10 @@ function SetupScreen() {
             age: "",
             height: "",
             weight: "",
-            weightloss: null,
+            weightloss: categories[0],
           }}
-          onSubmit={(values) => console.log(values)}
-          validationSchema={validationSchema}
+          onSubmit={(values) => submit(values)}
+          //validationSchema={validationSchema}
         >
           <FormField
             keyboardType="numeric"

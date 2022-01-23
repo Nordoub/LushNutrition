@@ -11,9 +11,8 @@ import ListItemSeperator from "../components/lists/ListItemSeperator";
 
 import { lunch, ontbijt } from "../config/maaltijden";
 
-function AddMealScreen({ meals }) {
-  const [type, setType] = useState(meals ? meals : ontbijt);
-
+function AddMealScreen({ route }) {
+  //   const [type, setType] = useState(meals ? meals : ontbijt);
   //   useEffect(() => {
   //     setType(mealType);
   //   }, [mealType]);
@@ -35,9 +34,9 @@ function AddMealScreen({ meals }) {
 
   return (
     <Screen style={styles.container}>
-      <AppText style={styles.header}>{"Maaltijden"}</AppText>
+      {/* <AppText style={styles.header}>{"Maaltijden"}</AppText> */}
       <FlatList
-        data={type}
+        data={route.params}
         keyExtractor={(meal) => meal.id.toString()}
         renderItem={({ item }) => (
           <ListItem
@@ -54,7 +53,9 @@ function AddMealScreen({ meals }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    paddingTop: 0,
+  },
   header: {
     fontSize: 30,
     alignSelf: "center",

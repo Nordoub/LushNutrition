@@ -11,9 +11,9 @@ import { maaltijden } from "../config/maaltijden";
 
 let today = new Date();
 
-function DashboardScreen() {
-  const [value, setValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(100);
+function DashboardScreen({ navigation }) {
+  const [value, setValue] = useState(436);
+  const [maxValue, setMaxValue] = useState(2200);
   const [date, setDate] = useState(
     today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()
   );
@@ -24,7 +24,11 @@ function DashboardScreen() {
       " " +
       months[today.getMonth()]
   );
-
+  const handlePress = (item) => {
+    //console.log(item.data);
+    setValue(value + 200);
+    navigation.navigate("AddMeal", item.data);
+  };
   return (
     <Screen style={styles.container}>
       <CircularProgress
@@ -51,7 +55,7 @@ function DashboardScreen() {
             title={item.title}
             subtitle={item.description}
             image={item.image}
-            onPress={() => setValue(value + 15)}
+            onPress={() => handlePress(item)}
             renderRightActions={() => (
               <ListItemDeleteAction onPress={() => handleDelete(item)} />
             )}
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
   items: {
     // flex: 1,
     width: "100%",
-    paddingTop: 10,
+    paddingTop: 30,
   },
   date: {
     fontSize: 20,
