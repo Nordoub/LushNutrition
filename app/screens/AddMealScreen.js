@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Image, FlatList } from "react-native";
 import * as Yup from "yup";
 import Toast from "react-native-toast-message";
@@ -8,14 +8,18 @@ import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import AppText from "../components/AppText";
 import { ListItem, ListItemDeleteAction } from "../components/lists";
 import ListItemSeperator from "../components/lists/ListItemSeperator";
-
-import { lunch, ontbijt } from "../config/maaltijden";
+import mealsApi from "../api/meals";
+import AppButton from "../components/AppButton";
+import useApi from "../hooks/useApi";
+import ProgressContext from "../context/progressContext";
 
 function AddMealScreen({ route }) {
-  //   const [type, setType] = useState(meals ? meals : ontbijt);
-  //   useEffect(() => {
-  //     setType(mealType);
-  //   }, [mealType]);
+  const { data: meals, error, request: loadMeals } = useApi(mealsApi.getMeals);
+  const { currentCalories, setCurrentCalories } = useContext(ProgressContext);
+
+  useEffect(() => {
+    loadMeals();
+  }, []);
 
   const showToast = (message) => {
     Toast.show({
@@ -28,15 +32,24 @@ function AddMealScreen({ route }) {
   };
 
   const addMeal = (meal) => {
-    // addmeal code
+    // setCurrentCalories(currentCalories + meal.calorieën);
+    route.params.setValue(route.params.value + meal.calorieën);
+    route.params.setMeals([...route.params.meals, meal]);
+    console.log(route.params.meals);
     showToast(`${meal.title} has been added!`);
   };
 
   return (
     <Screen style={styles.container}>
       {/* <AppText style={styles.header}>{"Maaltijden"}</AppText> */}
+      {error && (
+        <>
+          <AppText>Could't retrieve the meals.</AppText>
+          <AppButton title="Retry" onPress={loadMeals} />
+        </>
+      )}
       <FlatList
-        data={route.params}
+        data={meals}
         keyExtractor={(meal) => meal.id.toString()}
         renderItem={({ item }) => (
           <ListItem

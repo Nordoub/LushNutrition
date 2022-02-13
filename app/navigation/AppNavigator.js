@@ -1,55 +1,23 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import AccountScreen from "../screens/AccountScreen";
-import DashboardScreen from "../screens/DashboardScreen";
-import DashboardNavigator from "./DashboardNavigator";
-import MainButton from "./MainButton";
+import SetupScreen from "../screens/SetupScreen";
+import TabNavigator from "./TabNavigator";
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const AppNavigator = () => (
-  <Tab.Navigator
-    initialRouteName="Dashboard"
-    tabBarOptions={{
-      activeBackgroundColor: "tomato",
-      activeTintColor: "white",
-      inactiveBackgroundColor: "#eee",
-      inactiveTintColor: "black",
-    }}
+  <Stack.Navigator
+    initialRouteName="Setup"
+    screenOptions={{ headerTitleAlign: "center", headerShown: false }}
   >
-    {/* <Tab.Screen
-      name="Account2"
-      component={AccountScreen}
-      options={{
-        tabBarIcon: ({ size, color }) => (
-          <MaterialCommunityIcons name="account" size={size} color={color} />
-        ),
-      }}
-    /> */}
-    <Tab.Screen
-      name="Dashboard"
-      component={DashboardNavigator}
-      options={{
-        // tabBarButton: () => (
-        //   <MainButton onPress={() => navigation.navigate("Dashboard")} />
-        // ),
-        tabBarIcon: ({ size, color }) => (
-          <MaterialCommunityIcons name="home" size={size} color={color} />
-        ),
-      }}
+    <Stack.Screen
+      name="Setup"
+      component={SetupScreen}
+      options={{ headerShown: false }}
     />
-    <Tab.Screen
-      name="Account"
-      component={AccountScreen}
-      options={{
-        tabBarIcon: ({ size, color }) => (
-          <MaterialCommunityIcons name="account" size={size} color={color} />
-        ),
-      }}
-    />
-  </Tab.Navigator>
+    <Stack.Screen name="MainScreen" component={TabNavigator} />
+  </Stack.Navigator>
 );
 
 export default AppNavigator;

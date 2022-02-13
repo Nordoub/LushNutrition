@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { FlatList, StyleSheet, LogBox } from "react-native";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 import ListItemSeperator from "../components/lists/ListItemSeperator";
@@ -8,12 +8,22 @@ import CircularProgress from "react-native-circular-progress-indicator";
 
 import { days, months } from "../config/dates";
 import { maaltijden } from "../config/maaltijden";
+import PersonalContext from "../context/personalContext";
+import ProgressContext from "../context/progressContext";
+
+LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
+]);
 
 let today = new Date();
 
 function DashboardScreen({ navigation }) {
-  const [value, setValue] = useState(436);
-  const [maxValue, setMaxValue] = useState(2200);
+  // const { currentCalories } = useContext(ProgressContext);
+  const { maxCalories } = useContext(PersonalContext);
+  const [meals, setMeals] = useState([]);
+  const [value, setValue] = useState(0);
+  const [maxValue, setMaxValue] = useState(maxCalories);
+
   const [date, setDate] = useState(
     today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()
   );
@@ -24,21 +34,24 @@ function DashboardScreen({ navigation }) {
       " " +
       months[today.getMonth()]
   );
+  // useEffect(() => {
+  //   setValue(currentCalories);
+  // }, [currentCalories]);
+
   const handlePress = (item) => {
-    //console.log(item.data);
-    setValue(value + 200);
-    navigation.navigate("AddMeal", item.data);
+    navigation.navigate("AddMeal", { setValue, value, setMeals, meals });
   };
+
   return (
     <Screen style={styles.container}>
       <CircularProgress
-        value={value <= maxValue ? value : maxValue}
+        value={value <= maxCalories ? value : maxValue}
         radius={110}
         duration={2000}
         // textColor={"#ecf0f1"}
         maxValue={maxValue}
-        title={"Calorieën"}
-        // subtitle={`${maxValue < value ? value - maxValue : "test"}`}
+        title={"/ " + Math.round(maxCalories)}
+        subtitle={"Calorieën"}
         activeStrokeColor={"#f39c12"}
         inActiveStrokeColor={"#9b59b6"}
         inActiveStrokeOpacity={0.2}
@@ -55,7 +68,7 @@ function DashboardScreen({ navigation }) {
             title={item.title}
             subtitle={item.description}
             image={item.image}
-            onPress={() => handlePress(item)}
+            onPress={() => handlePress(item, setValue)}
             renderRightActions={() => (
               <ListItemDeleteAction onPress={() => handleDelete(item)} />
             )}

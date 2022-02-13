@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Image,
@@ -20,6 +20,7 @@ import {
   SubmitButton,
 } from "../components/forms";
 import Screen from "../components/Screen";
+import PersonalContext from "../context/personalContext";
 
 const validationSchema = Yup.object().shape({
   age: Yup.number().required().min(1).max(120).label("Age"),
@@ -27,17 +28,36 @@ const validationSchema = Yup.object().shape({
   weight: Yup.number().required().min(10).max(300).label("Weight"),
 });
 
-const categories = [
-  { label: "Maintain weight", value: 1 },
-  { label: "Mild weight loss", value: 2 },
-  { label: "Normal weight loss", value: 3 },
-  { label: "Advanced weight loss", value: 4 },
+const activity = [
+  { label: "Sedentary", value: 1.2 },
+  { label: "Lightly Active", value: 1.375 },
+  { label: "Moderately Active", value: 1.55 },
+  { label: "Very Active", value: 1.725 },
+];
+
+const gender = [
+  { label: "Male", value: "Male" },
+  { label: "Female", value: "Female" },
 ];
 
 function SetupScreen({ navigation }) {
+  const personalContext = useContext(PersonalContext);
+
   const submit = (values) => {
-    console.log(values);
-    navigation.navigate("Dashboard");
+    // console.log(calculateCalories(values));
+    personalContext.setPersonalInfo(values);
+    personalContext.setMaxCalories(calculateCalories(values));
+    navigation.navigate("MainScreen");
+  };
+
+  const calculateCalories = ({ weight, height, age, gender, activity }) => {
+    let maxCalories;
+    if (gender.value === "Male")
+      maxCalories = 66 + 13.7 * weight + 5 * height - 6.8 * age;
+    else maxCalories = 655 + 9.6 * weight + 1.8 * height - 4.7 * age;
+
+    // multiply by activity level value minus 500 calories (for weight loss)
+    return maxCalories * activity.value - 500;
   };
 
   return (
@@ -53,10 +73,11 @@ function SetupScreen({ navigation }) {
             age: "",
             height: "",
             weight: "",
-            weightloss: categories[0],
+            gender: gender[0],
+            activity: activity[0],
           }}
           onSubmit={(values) => submit(values)}
-          //validationSchema={validationSchema}
+          validationSchema={validationSchema}
         >
           <FormField
             keyboardType="numeric"
@@ -76,10 +97,11 @@ function SetupScreen({ navigation }) {
             name="height"
             placeholder="Height in centimeters"
           />
+          <Picker items={gender} name="gender" placeholder="Your gender" />
           <Picker
-            items={categories}
-            name="weightloss"
-            placeholder="Type of weightloss"
+            items={activity}
+            name="activity"
+            placeholder="Type of activity"
           />
           <SubmitButton title="Submit" />
         </Form>

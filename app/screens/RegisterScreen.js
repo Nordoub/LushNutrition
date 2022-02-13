@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Image } from "react-native";
 import * as Yup from "yup";
+// import { auth } from "../firebase";
 
 import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import Screen from "../components/Screen";
@@ -11,14 +12,35 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(4).max(255).label("Password"),
 });
 
-function RegisterScreen({}) {
+// const auth = firebase.auth();
+// const firestore = firebase.firestore();
+
+// const db = firestore();
+
+function RegisterScreen() {
+  // const handleSignup = (email, password) => {
+  //   auth
+  //     .createUserWithEmailAndPassword(email, password)
+  //     .then((userCredentials) => {
+  //       const user = userCredentials.user;
+  //       console.log(user.email);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  //   console.log("test");
+  // };
+
   return (
     <Screen style={styles.container}>
       <Image style={styles.logo} source={require("../assets/logo-red.png")} />
 
       <AppForm
         initialValues={{ name: "", email: "", password: "" }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          console.log(values.email, values.password);
+          handleSignup(values.email, values.password);
+        }}
         validationSchema={validationSchema}
       >
         <AppFormField

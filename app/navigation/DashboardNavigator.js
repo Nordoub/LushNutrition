@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import AddMealScreen from "../screens/AddMealScreen";
 import DashboardScreen from "../screens/DashboardScreen";
+import SetupScreen from "../screens/SetupScreen";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,11 @@ const DashboardNavigator = () => (
         },
       }}
     />
+    {/* <Stack.Screen
+      name="Setup"
+      component={SetupScreen}
+      options={{ headerShown: false }}
+    /> */}
   </Stack.Navigator>
 );
 

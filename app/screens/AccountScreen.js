@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 
 import Screen from "../components/Screen";
@@ -6,50 +6,29 @@ import ListItem from "../components/lists/ListItem";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
 import ListItemSeperator from "../components/lists/ListItemSeperator";
-
-const menuItems = [
-  {
-    title: "My Listings",
-    icon: {
-      name: "format-list-bulleted",
-      backgroundColor: colors.primary,
-    },
-  },
-  {
-    title: "My Messages",
-    icon: {
-      name: "email",
-      backgroundColor: colors.secondary,
-    },
-  },
-];
+import AuthContext from "../context/authContext";
+import PersonalContext from "../context/personalContext";
 
 function AccountScreen(props) {
+  const { user } = useContext(AuthContext);
+  const { maxCalories } = useContext(PersonalContext);
+  const { personalInfo } = useContext(PersonalContext);
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title="Lorem Ipsum"
-          subTitle="test@gmail.com"
+          title={user.firstName + " " + user.lastName}
+          subTitle={user.email}
           image={require("../assets/mosh.jpg")}
+          iconName=""
         />
-      </View>
-      <View style={styles.container}>
-        <FlatList
-          data={menuItems}
-          keyExtractor={(menuItem) => menuItem.title}
-          ItemSeparatorComponent={ListItemSeperator}
-          renderItem={({ item }) => (
-            <ListItem
-              title={item.title}
-              IconComponent={
-                <Icon
-                  name={item.icon.name}
-                  backgroundColor={item.icon.backgroundColor}
-                />
-              }
-            />
-          )}
+        <ListItem title="Age:" subTitle={personalInfo.age} iconName="" />
+        <ListItem title="Weight:" subTitle={personalInfo.weight} iconName="" />
+        <ListItem title="Height:" subTitle={personalInfo.height} iconName="" />
+        <ListItem
+          title="Calories for weight loss:"
+          subTitle={Math.round(maxCalories)}
+          iconName=""
         />
       </View>
 
