@@ -6,8 +6,8 @@ import ListItemSeperator from "../components/lists/ListItemSeperator";
 import { ListItem, ListItemDeleteAction } from "../components/lists";
 import CircularProgress from "react-native-circular-progress-indicator";
 
-import { days, months } from "../config/dates";
-import { maaltijden } from "../config/maaltijden";
+import { days, months } from "../constants/dates";
+import { mealTypes } from "../constants/mealTypes";
 import PersonalContext from "../context/personalContext";
 import ProgressContext from "../context/progressContext";
 
@@ -50,7 +50,7 @@ function DashboardScreen({ navigation }) {
       />
       <AppText style={styles.date}>{date}</AppText>
       <FlatList
-        data={maaltijden}
+        data={mealTypes}
         style={styles.items}
         keyExtractor={(maaltijd) => maaltijd.id.toString()}
         renderItem={({ item }) => (

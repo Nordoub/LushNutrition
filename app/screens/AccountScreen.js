@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList } from "react-native";
 
 import Screen from "../components/Screen";
 import ListItem from "../components/lists/ListItem";
-import colors from "../config/colors";
+import colors from "../constants/colors";
 import Icon from "../components/Icon";
 import AuthContext from "../context/authContext";
 import PersonalContext from "../context/personalContext";
