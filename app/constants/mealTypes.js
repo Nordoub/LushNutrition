@@ -1,9 +1,9 @@
 export const mealTypes = [
   {
     id: 1,
-    title: "Ontbijt",
-    description: "Ontbijt",
-    image: require("../assets/ontbijt.png"),
+    title: "Breakfast",
+    description: "Breakfast",
+    image: require("../assets/breakfast.png"),
   },
   {
     id: 2,
@@ -13,8 +13,8 @@ export const mealTypes = [
   },
   {
     id: 3,
-    title: "Avondeten",
-    description: "Avondeten",
-    image: require("../assets/avondeten.png"),
+    title: "Dinner",
+    description: "Dinner",
+    image: require("../assets/dinner.png"),
   },
 ];

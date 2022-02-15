@@ -39,7 +39,7 @@ function AddMealScreen({ route }) {
     <Screen style={styles.container}>
       {error && (
         <>
-          <AppText>Could't retrieve the meals.</AppText>
+          <AppText>Couldn't retrieve the meals.</AppText>
           <AppButton title="Retry" onPress={loadMeals} />
         </>
       )}
