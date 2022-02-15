@@ -1,15 +1,5 @@
 import React, { useContext } from "react";
-import {
-  StyleSheet,
-  Image,
-  Text,
-  View,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  TextInput,
-} from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { StyleSheet, Image, Text, View } from "react-native";
 import * as Yup from "yup";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -44,7 +34,6 @@ function SetupScreen({ navigation }) {
   const personalContext = useContext(PersonalContext);
 
   const submit = (values) => {
-    // console.log(calculateCalories(values));
     personalContext.setPersonalInfo(values);
     personalContext.setMaxCalories(calculateCalories(values));
     navigation.navigate("MainScreen");
@@ -64,7 +53,7 @@ function SetupScreen({ navigation }) {
     <KeyboardAwareScrollView>
       <Screen style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image style={styles.logo} source={require("../assets/mosh.jpg")} />
+          <Image style={styles.logo} source={require("../assets/user.jpg")} />
           <Text style={styles.title}>Personal information</Text>
         </View>
 
@@ -113,7 +102,6 @@ function SetupScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    // alignItems: "center",
   },
   container2: {
     flex: 1,
@@ -123,8 +111,6 @@ const styles = StyleSheet.create({
     height: 50,
   },
   logoContainer: {
-    // position: "absolute",
-    // top: 70,
     alignItems: "center",
   },
   title: {

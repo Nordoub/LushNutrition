@@ -4,7 +4,7 @@ import Toast from "react-native-toast-message";
 
 import AppNavigator from "./app/navigation/AppNavigator";
 import AuthContext from "./app/context/authContext";
-import CalorieContext from "./app/context/progressContext";
+import ProgressContext from "./app/context/progressContext";
 import PersonalContext from "./app/context/personalContext";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 
@@ -13,6 +13,7 @@ export default function App() {
   const [personalInfo, setPersonalInfo] = useState();
   const [maxCalories, setMaxCalories] = useState(0);
   const [currentCalories, setCurrentCalories] = useState(0);
+  const [mealHistory, setMealHistory] = useState([]);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
@@ -24,14 +25,19 @@ export default function App() {
           setMaxCalories,
         }}
       >
-        <CalorieContext.Provider
-          value={{ currentCalories, setCurrentCalories }}
+        <ProgressContext.Provider
+          value={{
+            currentCalories,
+            setCurrentCalories,
+            mealHistory,
+            setMealHistory,
+          }}
         >
           <NavigationContainer>
             {user ? <AppNavigator /> : <AuthNavigator />}
           </NavigationContainer>
           <Toast />
-        </CalorieContext.Provider>
+        </ProgressContext.Provider>
       </PersonalContext.Provider>
     </AuthContext.Provider>
   );

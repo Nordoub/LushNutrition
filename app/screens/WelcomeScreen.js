@@ -2,7 +2,6 @@ import React from "react";
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 
 import AppButton from "../components/AppButton";
-// rsf to generate this class
 
 function WelcomeScreen({ navigation }) {
   return (
@@ -29,7 +28,6 @@ function WelcomeScreen({ navigation }) {
   );
 }
 
-// rnss to generate stylesheet code
 const styles = StyleSheet.create({
   background: {
     flex: 1,

@@ -5,21 +5,25 @@ import Screen from "../components/Screen";
 import ListItem from "../components/lists/ListItem";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
-import ListItemSeperator from "../components/lists/ListItemSeperator";
 import AuthContext from "../context/authContext";
 import PersonalContext from "../context/personalContext";
 
 function AccountScreen(props) {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const { maxCalories } = useContext(PersonalContext);
   const { personalInfo } = useContext(PersonalContext);
+
+  const logout = () => {
+    setUser();
+  };
+
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
           title={user.firstName + " " + user.lastName}
           subTitle={user.email}
-          image={require("../assets/mosh.jpg")}
+          image={require("../assets/user.jpg")}
           iconName=""
         />
         <ListItem title="Age:" subTitle={personalInfo.age} iconName="" />
@@ -35,6 +39,7 @@ function AccountScreen(props) {
       <ListItem
         title="Log Out"
         IconComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
+        onPress={logout}
       />
     </Screen>
   );

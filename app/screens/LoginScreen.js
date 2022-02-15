@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { StyleSheet, Image } from "react-native";
 import * as Yup from "yup";
-// import jwtDecode from "jwt-decode";
 
 import Screen from "../components/Screen";
 import {
@@ -11,7 +10,6 @@ import {
   SubmitButton,
 } from "../components/forms";
 import AppText from "../components/AppText";
-import AppButton from "../components/AppButton";
 import authApi from "../api/auth";
 import AuthContext from "../context/authContext";
 
@@ -32,11 +30,6 @@ function LoginScreen({ navigation }) {
     authContext.setUser(result.data);
   };
 
-  const login = (values) => {
-    console.log(values);
-    navigation.navigate("Setup");
-  };
-
   return (
     <Screen style={styles.container}>
       <Image style={styles.logo} source={require("../assets/logo-red.png")} />
@@ -44,7 +37,7 @@ function LoginScreen({ navigation }) {
       <AppForm
         initialValues={{ email: "", password: "" }}
         onSubmit={handleSubmit}
-        //validationSchema={validationSchema}
+        validationSchema={validationSchema}
       >
         <ErrorMessage
           error="Invalid email and/or password."

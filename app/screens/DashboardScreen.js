@@ -18,47 +18,37 @@ LogBox.ignoreLogs([
 let today = new Date();
 
 function DashboardScreen({ navigation }) {
-  // const { currentCalories } = useContext(ProgressContext);
   const { maxCalories } = useContext(PersonalContext);
-  const [meals, setMeals] = useState([]);
-  const [value, setValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(maxCalories);
+  const { currentCalories } = useContext(ProgressContext);
 
   const [date, setDate] = useState(
-    today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()
-  );
-  const [translatedDate, setTranslatedDate] = useState(
     days[today.getDay()] +
       ", " +
       today.getDate() +
       " " +
       months[today.getMonth()]
   );
-  // useEffect(() => {
-  //   setValue(currentCalories);
-  // }, [currentCalories]);
 
-  const handlePress = (item) => {
-    navigation.navigate("AddMeal", { setValue, value, setMeals, meals });
+  const handlePress = () => {
+    navigation.navigate("AddMeal");
   };
 
   return (
     <Screen style={styles.container}>
       <CircularProgress
-        value={value <= maxCalories ? value : maxValue}
+        value={currentCalories}
         radius={110}
         duration={2000}
-        // textColor={"#ecf0f1"}
-        maxValue={maxValue}
+        maxValue={maxCalories}
         title={"/ " + Math.round(maxCalories)}
         subtitle={"Calorieën"}
-        activeStrokeColor={"#f39c12"}
-        inActiveStrokeColor={"#9b59b6"}
-        inActiveStrokeOpacity={0.2}
-        inActiveStrokeWidth={20}
+        activeStrokeColor={currentCalories <= maxCalories ? "#f39c12" : "red"}
+        inActiveStrokeColor={currentCalories <= maxCalories ? "#9b59b6" : "red"}
+        inActiveStrokeOpacity={currentCalories <= maxCalories ? 0.2 : 1}
+        inActiveStrokeWidth={currentCalories <= maxCalories ? 20 : 10}
         activeStrokeWidth={10}
       />
-      <AppText style={styles.date}>{translatedDate}</AppText>
+      <AppText style={styles.date}>{date}</AppText>
       <FlatList
         data={maaltijden}
         style={styles.items}
@@ -68,10 +58,7 @@ function DashboardScreen({ navigation }) {
             title={item.title}
             subtitle={item.description}
             image={item.image}
-            onPress={() => handlePress(item, setValue)}
-            renderRightActions={() => (
-              <ListItemDeleteAction onPress={() => handleDelete(item)} />
-            )}
+            onPress={handlePress}
           />
         )}
         ItemSeparatorComponent={ListItemSeperator}
@@ -88,9 +75,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   items: {
-    // flex: 1,
     width: "100%",
-    paddingTop: 30,
+    paddingTop: 10,
   },
   date: {
     fontSize: 20,
