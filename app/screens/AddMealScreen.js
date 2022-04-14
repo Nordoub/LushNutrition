@@ -12,7 +12,7 @@ import useApi from "../hooks/useApi";
 import ProgressContext from "../context/progressContext";
 LogBox.ignoreLogs(["Encountered two"]);
 
-function AddMealScreen({ route }) {
+function AddMealScreen() {
   const { data: meals, error, request: loadMeals } = useApi(mealsApi.getMeals);
   const { currentCalories, setCurrentCalories, mealHistory, setMealHistory } =
     useContext(ProgressContext);
@@ -31,7 +31,10 @@ function AddMealScreen({ route }) {
 
   const addMeal = (meal) => {
     setCurrentCalories(currentCalories + meal.calorieën);
-    setMealHistory([...mealHistory, meal]);
+    setMealHistory([
+      ...mealHistory,
+      { title: meal.title, calorieën: meal.calorieën },
+    ]);
     showToast(`${meal.title} has been added!`);
   };
 

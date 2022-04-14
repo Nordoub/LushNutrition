@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { StyleSheet, FlatList } from "react-native";
 import Toast from "react-native-toast-message";
 
@@ -9,9 +9,10 @@ import ListItemSeperator from "../components/lists/ListItemSeperator";
 
 import ProgressContext from "../context/progressContext";
 
-function MealHistoryScreen({ route }) {
+function MealHistoryScreen() {
   const { mealHistory, setMealHistory, currentCalories, setCurrentCalories } =
     useContext(ProgressContext);
+  const swipeableRef = useRef(null);
 
   const showToast = (message) => {
     Toast.show({
@@ -22,7 +23,7 @@ function MealHistoryScreen({ route }) {
   };
 
   const removeMeal = (meal) => {
-    setMealHistory(mealHistory.filter((item) => item.id !== meal.id));
+    setMealHistory(mealHistory.filter((item) => item !== meal));
     setCurrentCalories(currentCalories - meal.calorieën);
     showToast(`${meal.title} has been removed!`);
   };
@@ -36,15 +37,23 @@ function MealHistoryScreen({ route }) {
       )}
       <FlatList
         data={mealHistory}
-        keyExtractor={(meal) => meal.id.toString()}
-        renderItem={({ item, index }) => (
+        keyExtractor={(index) => index}
+        renderItem={({ item }) => (
           <ListItem
             title={item.title}
             subTitle={item.calorieën + " calorieën"}
-            iconName={"chevron-left"}
-            renderRightActions={() => (
-              <ListItemDeleteAction onPress={() => removeMeal(item)} />
-            )}
+            // iconName={"chevron-left"}
+            iconName={"minus-circle"}
+            innerRef={swipeableRef}
+            onPress={() => removeMeal(item)}
+            // renderRightActions={() => (
+            //   <ListItemDeleteAction
+            //     onPress={() => {
+            //       swipeableRef.current.close();
+            //       removeMeal(item);
+            //     }}
+            //   />
+            // )}
           />
         )}
         ItemSeparatorComponent={ListItemSeperator}

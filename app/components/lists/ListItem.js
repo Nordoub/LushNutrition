@@ -4,6 +4,7 @@ import colors from "../../constants/colors";
 import AppText from "../AppText";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useDeviceOrientation } from "@react-native-community/hooks";
 
 function ListItem({
   title,
@@ -14,13 +15,27 @@ function ListItem({
   onPressIcon,
   renderRightActions,
   iconName = "chevron-right",
+  style,
+  imgStyle,
 }) {
+  const { landscape } = useDeviceOrientation();
+
   return (
     <Swipeable renderRightActions={renderRightActions}>
       <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
-        <View style={styles.container}>
+        <View
+          style={{ ...styles.container, ...style, margin: landscape ? 0 : 15 }}
+        >
           {IconComponent}
-          {image && <Image style={styles.image} source={image} />}
+          {image && (
+            <Image
+              style={{
+                ...styles.image,
+                ...imgStyle,
+              }}
+              source={image}
+            />
+          )}
           <View style={styles.detailsContainer}>
             <AppText style={styles.title} numberOfLines={1}>
               {title}
@@ -47,9 +62,10 @@ function ListItem({
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    justifyContent: "center",
     flexDirection: "row",
-    padding: 15,
-    backgroundColor: colors.white,
+    //padding: 15,
+    backgroundColor: colors.light,
   },
   image: {
     width: 70,

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, Image } from "react-native";
+import React, { useState, useRef } from "react";
+import { StyleSheet, Image, Keyboard } from "react-native";
 import * as Yup from "yup";
 import authApi from "../api/auth";
 import AppText from "../components/AppText";
@@ -8,16 +8,23 @@ import Toast from "react-native-toast-message";
 import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import Screen from "../components/Screen";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useDeviceOrientation } from "@react-native-community/hooks";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required().min(4).max(255).label("firstName"),
-  lastName: Yup.string().required().min(4).max(255).label("lastName"),
+  firstName: Yup.string().required().min(4).max(255).label("First name"),
+  lastName: Yup.string().required().min(4).max(255).label("Last name"),
   email: Yup.string().required().email().max(255).label("Email"),
   password: Yup.string().required().min(4).max(255).label("Password"),
 });
 
 function RegisterScreen({ navigation }) {
   const [registerFailed, setRegisterFailed] = useState(false);
+  const { landscape } = useDeviceOrientation();
+
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const submitRef = useRef(null);
 
   const handleSubmit = async ({ firstName, lastName, email, password }) => {
     const result = await authApi.register(firstName, lastName, email, password);
@@ -34,8 +41,13 @@ function RegisterScreen({ navigation }) {
   return (
     <KeyboardAwareScrollView>
       <Screen style={styles.container}>
-        <Image style={styles.logo} source={require("../assets/logo-red.png")} />
-        {registerFailed && <AppText>{"fail"}</AppText>}
+        {!landscape && (
+          <Image
+            style={styles.logo}
+            source={require("../assets/logo-red.png")}
+          />
+        )}
+        {registerFailed && <AppText>{"Error registering"}</AppText>}
         <AppForm
           initialValues={{
             firstName: "",
@@ -51,12 +63,21 @@ function RegisterScreen({ navigation }) {
             icon="account"
             name="firstName"
             placeholder="First name"
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              lastNameRef.current.focus();
+            }}
           />
           <AppFormField
             autoCorrect={false}
             icon="account"
             name="lastName"
             placeholder="Last name"
+            innerRef={lastNameRef}
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              emailRef.current.focus();
+            }}
           />
           <AppFormField
             autoCapitalize="none"
@@ -66,6 +87,11 @@ function RegisterScreen({ navigation }) {
             name="email"
             placeholder="Email"
             textContentType="emailAddress"
+            innerRef={emailRef}
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              passwordRef.current.focus();
+            }}
           />
           <AppFormField
             autoCapitalize="none"
@@ -75,6 +101,9 @@ function RegisterScreen({ navigation }) {
             placeholder="Password"
             secureTextEntry={true}
             textContentType="password"
+            innerRef={passwordRef}
+            returnKeyType="next"
+            onSubmitEditing={Keyboard.dismiss}
           />
           <SubmitButton title="register" />
         </AppForm>

@@ -4,10 +4,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../constants/colors";
 import defaultStyles from "../constants/styles";
+import { useDeviceOrientation } from "@react-native-community/hooks";
 
-function AppTextInput({ icon, ...otherProps }) {
+function AppTextInput({ icon, innerRef, ...otherProps }) {
+  const { landscape } = useDeviceOrientation();
+
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, marginVertical: landscape ? 0 : 10 }}>
       {icon && (
         <MaterialCommunityIcons
           name={icon}
@@ -18,7 +21,8 @@ function AppTextInput({ icon, ...otherProps }) {
       )}
       <TextInput
         placeholderTextColor={defaultStyles.colors.medium}
-        style={defaultStyles.text}
+        style={{ ...defaultStyles.text, ...styles.textInput }}
+        ref={innerRef}
         {...otherProps}
       ></TextInput>
     </View>
@@ -32,10 +36,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     padding: 15,
-    marginVertical: 10,
+    // marginVertical: landscape ? 0 : 10,
   },
   icon: {
     marginRight: 10,
+  },
+  textInput: {
+    flex: 1,
   },
 });
 

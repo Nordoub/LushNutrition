@@ -7,11 +7,13 @@ import colors from "../constants/colors";
 import Icon from "../components/Icon";
 import AuthContext from "../context/authContext";
 import PersonalContext from "../context/personalContext";
+import { useDeviceOrientation } from "@react-native-community/hooks";
 
-function AccountScreen(props) {
+function AccountScreen() {
   const { user, setUser } = useContext(AuthContext);
   const { maxCalories } = useContext(PersonalContext);
   const { personalInfo } = useContext(PersonalContext);
+  const { landscape } = useDeviceOrientation();
 
   const logout = () => {
     setUser();
@@ -23,6 +25,7 @@ function AccountScreen(props) {
         <ListItem
           title={user.firstName + " " + user.lastName}
           subTitle={user.email}
+          imgStyle={{ width: 40, height: 40 }}
           image={require("../assets/user.jpg")}
           iconName=""
         />
@@ -31,13 +34,14 @@ function AccountScreen(props) {
         <ListItem title="Height:" subTitle={personalInfo.height} iconName="" />
         <ListItem
           title="Calories for weight loss:"
-          subTitle={Math.round(maxCalories)}
+          subTitle={maxCalories}
           iconName=""
         />
       </View>
 
       <ListItem
         title="Log Out"
+        iconName={landscape ? "" : "chevron-right"}
         IconComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
         onPress={logout}
       />

@@ -11,6 +11,7 @@ import {
 } from "../components/forms";
 import Screen from "../components/Screen";
 import PersonalContext from "../context/personalContext";
+import { useDeviceOrientation } from "@react-native-community/hooks";
 
 const validationSchema = Yup.object().shape({
   age: Yup.number().required().min(1).max(120).label("Age"),
@@ -32,6 +33,7 @@ const gender = [
 
 function SetupScreen({ navigation }) {
   const personalContext = useContext(PersonalContext);
+  const { landscape } = useDeviceOrientation();
 
   const submit = (values) => {
     personalContext.setPersonalInfo(values);
@@ -46,15 +48,21 @@ function SetupScreen({ navigation }) {
     else maxCalories = 655 + 9.6 * weight + 1.8 * height - 4.7 * age;
 
     // multiply by activity level value minus 500 calories (for weight loss)
-    return maxCalories * activity.value - 500;
+    return Math.round(maxCalories * activity.value - 500);
   };
 
   return (
     <KeyboardAwareScrollView>
       <Screen style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image style={styles.logo} source={require("../assets/user.jpg")} />
-          <Text style={styles.title}>Personal information</Text>
+          {!landscape && (
+            <Image style={styles.logo} source={require("../assets/user.jpg")} />
+          )}
+          <Text
+            style={{ ...styles.title, paddingVertical: landscape ? 0 : 20 }}
+          >
+            Personal information
+          </Text>
         </View>
 
         <Form
@@ -116,7 +124,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: "600",
-    paddingVertical: 20,
+    //paddingVertical: landscape ? 0 : 20,
   },
 });
 

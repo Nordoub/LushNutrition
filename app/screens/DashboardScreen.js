@@ -10,6 +10,7 @@ import { days, months } from "../constants/dates";
 import { mealTypes } from "../constants/mealTypes";
 import PersonalContext from "../context/personalContext";
 import ProgressContext from "../context/progressContext";
+import { useDeviceOrientation } from "@react-native-community/hooks";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -20,6 +21,7 @@ let today = new Date();
 function DashboardScreen({ navigation }) {
   const { maxCalories } = useContext(PersonalContext);
   const { currentCalories } = useContext(ProgressContext);
+  const { landscape } = useDeviceOrientation();
 
   const [date, setDate] = useState(
     days[today.getDay()] +
@@ -34,13 +36,15 @@ function DashboardScreen({ navigation }) {
   };
 
   return (
-    <Screen style={styles.container}>
+    <Screen
+      style={{ ...styles.container, flexDirection: landscape ? "row" : "" }}
+    >
       <CircularProgress
         value={currentCalories}
         radius={110}
         duration={2000}
         maxValue={maxCalories}
-        title={"/ " + Math.round(maxCalories)}
+        title={"/ " + maxCalories}
         subtitle={"Calorieën"}
         activeStrokeColor={currentCalories <= maxCalories ? "#f39c12" : "red"}
         inActiveStrokeColor={currentCalories <= maxCalories ? "#9b59b6" : "red"}
@@ -48,17 +52,18 @@ function DashboardScreen({ navigation }) {
         inActiveStrokeWidth={currentCalories <= maxCalories ? 20 : 10}
         activeStrokeWidth={10}
       />
-      <AppText style={styles.date}>{date}</AppText>
+      {!landscape && <AppText style={styles.date}>{date}</AppText>}
       <FlatList
         data={mealTypes}
         style={styles.items}
-        keyExtractor={(maaltijd) => maaltijd.id.toString()}
+        keyExtractor={(meal) => meal.id.toString()}
         renderItem={({ item }) => (
           <ListItem
             title={item.title}
             subtitle={item.description}
             image={item.image}
             onPress={handlePress}
+            style={landscape ? { alignSelf: "flex-end", width: "80%" } : {}}
           />
         )}
         ItemSeparatorComponent={ListItemSeperator}
@@ -70,9 +75,14 @@ function DashboardScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
+    // padding: 50,
     alignSelf: "center",
     width: "100%",
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    // borderWidth: 1,
+    // borderColor: "black",
   },
   items: {
     width: "100%",

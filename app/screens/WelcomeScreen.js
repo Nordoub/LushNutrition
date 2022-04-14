@@ -36,7 +36,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 20,
-    width: "100%",
+    width: "90%",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   logo: {
@@ -52,6 +54,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "600",
     paddingVertical: 20,
+    color: "green",
   },
 });
 
