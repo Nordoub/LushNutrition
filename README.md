@@ -4,6 +4,8 @@ A fitness app for iOS and Android. Created with the React-Native framework.
 
 # Setup
 
+Rename ".env.example" to ".env" and add the server url to the BASE_URL environment variable.
+
 Open a terminal in the project location and type:
 
 - npm install
