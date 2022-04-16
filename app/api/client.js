@@ -1,7 +1,8 @@
 import { create } from "apisauce";
+import { BASE_URL } from "@env";
 
 const apiClient = create({
-  baseURL: "http://192.168.178.13:4000",
+  baseURL: BASE_URL,
 });
 
 export default apiClient;
