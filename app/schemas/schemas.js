@@ -17,3 +17,8 @@ export const registerValidationSchema = Yup.object().shape({
   email: Yup.string().required().email().max(255).label("Email"),
   password: Yup.string().required().min(4).max(255).label("Password"),
 });
+
+export const createMealValidationSchema = Yup.object().shape({
+  title: Yup.string().required().min(3).max(255).label("Name"),
+  calorieën: Yup.number().required().min(1).max(3000).label("Calories"),
+});

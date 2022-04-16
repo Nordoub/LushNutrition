@@ -10,16 +10,21 @@ import mealsApi from "../api/meals";
 import AppButton from "../components/AppButton";
 import useApi from "../hooks/useApi";
 import ProgressContext from "../context/progressContext";
+import { FloatingAction } from "react-native-floating-action";
 LogBox.ignoreLogs(["Encountered two"]);
 
-function AddMealScreen() {
+function AddMealScreen({ navigation }) {
   const { data: meals, error, request: loadMeals } = useApi(mealsApi.getMeals);
   const { currentCalories, setCurrentCalories, mealHistory, setMealHistory } =
     useContext(ProgressContext);
 
   useEffect(() => {
-    loadMeals();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      loadMeals();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const showToast = (message) => {
     Toast.show({
@@ -37,6 +42,18 @@ function AddMealScreen() {
     ]);
     showToast(`${meal.title} has been added!`);
   };
+  const removeMeal = async (title) => {
+    console.log(title);
+    const result = await mealsApi.deleteMeal(title);
+    console.log(result);
+    if (!result.ok) return;
+    loadMeals();
+    Toast.show({
+      type: "success",
+      text1: "Meal successfully deleted",
+      position: "bottom",
+    });
+  };
 
   return (
     <Screen style={styles.container}>
@@ -44,6 +61,11 @@ function AddMealScreen() {
         <>
           <AppText>Couldn't retrieve the meals.</AppText>
           <AppButton title="Retry" onPress={loadMeals} />
+        </>
+      )}
+      {meals && !meals.length > 0 && (
+        <>
+          <AppText style={styles.empty}>No meals exist yet...</AppText>
         </>
       )}
       <FlatList
@@ -55,9 +77,30 @@ function AddMealScreen() {
             subTitle={item.calorieën + " calorieën"}
             iconName={"plus-circle"}
             onPress={() => addMeal(item)}
+            renderRightActions={() => (
+              <ListItemDeleteAction
+                onPress={() => {
+                  removeMeal(item.title);
+                }}
+              />
+            )}
           />
         )}
         ItemSeparatorComponent={ListItemSeperator}
+      />
+      <FloatingAction
+        actions={[
+          {
+            name: "createMeal",
+            icon: require("../assets/plus.png"),
+            color: "grey",
+            position: 1,
+          },
+        ]}
+        overrideWithAction
+        onPressItem={() => {
+          navigation.navigate("CreateMeal");
+        }}
       />
     </Screen>
   );
@@ -72,6 +115,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 20,
     color: "#f39c12",
+  },
+  empty: {
+    alignSelf: "center",
+    justifyContent: "center",
+    flex: 1,
   },
 });
 

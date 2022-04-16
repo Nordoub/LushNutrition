@@ -19,6 +19,15 @@ function ListItem({
   imgStyle,
 }) {
   const { landscape } = useDeviceOrientation();
+  // usage:
+  // renderRightActions={() => (
+  //   <ListItemDeleteAction
+  //     onPress={() => {
+  //       swipeableRef.current.close();
+  //       removeMeal(item);
+  //     }}
+  //   />
+  // )}
 
   return (
     <Swipeable renderRightActions={renderRightActions}>

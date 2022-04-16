@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import AddMealScreen from "../screens/AddMealScreen";
+import CreateMealScreen from "../screens/CreateMealScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 import SetupScreen from "../screens/SetupScreen";
 
@@ -18,6 +19,17 @@ const DashboardNavigator = () => (
       component={AddMealScreen}
       options={{
         title: "Meals",
+        headerTintColor: "#f39c12",
+        headerTitleStyle: {
+          fontSize: 30,
+        },
+      }}
+    />
+    <Stack.Screen
+      name="CreateMeal"
+      component={CreateMealScreen}
+      options={{
+        title: "Add meal",
         headerTintColor: "#f39c12",
         headerTitleStyle: {
           fontSize: 30,

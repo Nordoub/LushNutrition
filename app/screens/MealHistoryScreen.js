@@ -46,14 +46,6 @@ function MealHistoryScreen() {
             iconName={"minus-circle"}
             innerRef={swipeableRef}
             onPress={() => removeMeal(item)}
-            // renderRightActions={() => (
-            //   <ListItemDeleteAction
-            //     onPress={() => {
-            //       swipeableRef.current.close();
-            //       removeMeal(item);
-            //     }}
-            //   />
-            // )}
           />
         )}
         ItemSeparatorComponent={ListItemSeperator}
