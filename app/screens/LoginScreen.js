@@ -1,10 +1,6 @@
 import React, { useContext, useState, useRef } from "react";
 import { StyleSheet, Image, Keyboard } from "react-native";
-import * as Yup from "yup";
-import {
-  useDimensions,
-  useDeviceOrientation,
-} from "@react-native-community/hooks";
+import { useDeviceOrientation } from "@react-native-community/hooks";
 import Screen from "../components/Screen";
 import {
   ErrorMessage,
@@ -15,11 +11,7 @@ import {
 import AppText from "../components/AppText";
 import authApi from "../api/auth";
 import AuthContext from "../context/authContext";
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(4).label("Password"),
-});
+import { loginValidationSchema } from "../schemas/schemas";
 
 function LoginScreen({ navigation }) {
   const authContext = useContext(AuthContext);
@@ -51,7 +43,7 @@ function LoginScreen({ navigation }) {
       <AppForm
         initialValues={{ email: "", password: "" }}
         onSubmit={handleSubmit}
-        validationSchema={validationSchema}
+        validationSchema={loginValidationSchema}
       >
         <ErrorMessage
           error="Invalid email and/or password."

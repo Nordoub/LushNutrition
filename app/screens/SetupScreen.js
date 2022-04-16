@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StyleSheet, Image, Text, View } from "react-native";
-import * as Yup from "yup";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useDeviceOrientation } from "@react-native-community/hooks";
 
 import {
   AppForm as Form,
@@ -11,25 +11,8 @@ import {
 } from "../components/forms";
 import Screen from "../components/Screen";
 import PersonalContext from "../context/personalContext";
-import { useDeviceOrientation } from "@react-native-community/hooks";
-
-const validationSchema = Yup.object().shape({
-  age: Yup.number().required().min(1).max(120).label("Age"),
-  height: Yup.number().required().min(30).max(220).label("Height"),
-  weight: Yup.number().required().min(10).max(300).label("Weight"),
-});
-
-const activity = [
-  { label: "Sedentary", value: 1.2 },
-  { label: "Lightly Active", value: 1.375 },
-  { label: "Moderately Active", value: 1.55 },
-  { label: "Very Active", value: 1.725 },
-];
-
-const gender = [
-  { label: "Male", value: "Male" },
-  { label: "Female", value: "Female" },
-];
+import { activity, gender } from "../constants/modalData";
+import { setupValidationSchema } from "../schemas/schemas";
 
 function SetupScreen({ navigation }) {
   const personalContext = useContext(PersonalContext);
@@ -74,7 +57,7 @@ function SetupScreen({ navigation }) {
             activity: activity[0],
           }}
           onSubmit={(values) => submit(values)}
-          validationSchema={validationSchema}
+          validationSchema={setupValidationSchema}
         >
           <FormField
             keyboardType="numeric"
@@ -124,7 +107,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: "600",
-    //paddingVertical: landscape ? 0 : 20,
   },
 });
 

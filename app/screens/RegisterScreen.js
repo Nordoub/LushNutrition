@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { StyleSheet, Image, Keyboard } from "react-native";
-import * as Yup from "yup";
 import authApi from "../api/auth";
 import AppText from "../components/AppText";
 import Toast from "react-native-toast-message";
@@ -9,13 +8,7 @@ import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import Screen from "../components/Screen";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDeviceOrientation } from "@react-native-community/hooks";
-
-const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required().min(4).max(255).label("First name"),
-  lastName: Yup.string().required().min(4).max(255).label("Last name"),
-  email: Yup.string().required().email().max(255).label("Email"),
-  password: Yup.string().required().min(4).max(255).label("Password"),
-});
+import { registerValidationSchema } from "../schemas/schemas";
 
 function RegisterScreen({ navigation }) {
   const [registerFailed, setRegisterFailed] = useState(false);
@@ -56,7 +49,7 @@ function RegisterScreen({ navigation }) {
             password: "",
           }}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}
+          validationSchema={registerValidationSchema}
         >
           <AppFormField
             autoCorrect={false}
