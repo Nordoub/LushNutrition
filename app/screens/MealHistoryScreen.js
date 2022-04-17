@@ -1,8 +1,9 @@
 import React, { useContext, useRef } from "react";
 import { StyleSheet, FlatList } from "react-native";
+
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
-import { ListItem, ListItemDeleteAction } from "../components/lists";
+import { ListItem } from "../components/lists";
 import ListItemSeperator from "../components/lists/ListItemSeperator";
 import { showToast } from "../utils/utils";
 import ProgressContext from "../context/progressContext";

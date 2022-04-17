@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
+import { useDeviceOrientation } from "@react-native-community/hooks";
 
 import Screen from "../components/Screen";
 import ListItem from "../components/lists/ListItem";
@@ -7,7 +8,6 @@ import colors from "../constants/colors";
 import Icon from "../components/Icon";
 import AuthContext from "../context/authContext";
 import PersonalContext from "../context/personalContext";
-import { useDeviceOrientation } from "@react-native-community/hooks";
 
 function AccountScreen() {
   const { user, setUser } = useContext(AuthContext);

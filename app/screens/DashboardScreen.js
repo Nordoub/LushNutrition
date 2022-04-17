@@ -1,15 +1,15 @@
 import React, { useState, useContext } from "react";
 import { FlatList, StyleSheet, LogBox } from "react-native";
+import CircularProgress from "react-native-circular-progress-indicator";
+import { useDeviceOrientation } from "@react-native-community/hooks";
+
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 import ListItemSeperator from "../components/lists/ListItemSeperator";
 import { ListItem } from "../components/lists";
-import CircularProgress from "react-native-circular-progress-indicator";
-
 import { mealTypes } from "../constants/mealTypes";
 import PersonalContext from "../context/personalContext";
 import ProgressContext from "../context/progressContext";
-import { useDeviceOrientation } from "@react-native-community/hooks";
 import { getDate } from "../utils/utils";
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",

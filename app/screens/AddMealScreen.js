@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { StyleSheet, FlatList, LogBox } from "react-native";
+import { showToast } from "../utils/utils";
+import { FloatingAction } from "react-native-floating-action";
 
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
@@ -9,8 +11,6 @@ import mealsApi from "../api/meals";
 import AppButton from "../components/AppButton";
 import useApi from "../hooks/useApi";
 import ProgressContext from "../context/progressContext";
-import { FloatingAction } from "react-native-floating-action";
-import { showToast } from "../utils/utils";
 LogBox.ignoreLogs(["Encountered two"]);
 
 function AddMealScreen({ navigation }) {

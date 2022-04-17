@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
 import { StyleSheet, Image, Keyboard } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 import mealsApi from "../api/meals";
 import AppText from "../components/AppText";
-
 import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import Screen from "../components/Screen";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { showToast } from "../utils/utils";
 import { createMealValidationSchema } from "../schemas/schemas";
 

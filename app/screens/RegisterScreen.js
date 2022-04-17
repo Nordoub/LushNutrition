@@ -1,12 +1,12 @@
 import React, { useState, useRef } from "react";
 import { StyleSheet, Image, Keyboard } from "react-native";
-import authApi from "../api/auth";
-import AppText from "../components/AppText";
-
-import { AppForm, AppFormField, SubmitButton } from "../components/forms";
-import Screen from "../components/Screen";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDeviceOrientation } from "@react-native-community/hooks";
+
+import authApi from "../api/auth";
+import AppText from "../components/AppText";
+import { AppForm, AppFormField, SubmitButton } from "../components/forms";
+import Screen from "../components/Screen";
 import { registerValidationSchema } from "../schemas/schemas";
 import { showToast } from "../utils/utils";
 
