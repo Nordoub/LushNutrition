@@ -13,6 +13,7 @@ import Screen from "../components/Screen";
 import PersonalContext from "../context/personalContext";
 import { activity, gender } from "../constants/modalData";
 import { setupValidationSchema } from "../schemas/schemas";
+import { calculateCalories } from "../utils/utils";
 
 function SetupScreen({ navigation }) {
   const personalContext = useContext(PersonalContext);
@@ -22,16 +23,6 @@ function SetupScreen({ navigation }) {
     personalContext.setPersonalInfo(values);
     personalContext.setMaxCalories(calculateCalories(values));
     navigation.navigate("MainScreen");
-  };
-
-  const calculateCalories = ({ weight, height, age, gender, activity }) => {
-    let maxCalories;
-    if (gender.value === "Male")
-      maxCalories = 66 + 13.7 * weight + 5 * height - 6.8 * age;
-    else maxCalories = 655 + 9.6 * weight + 1.8 * height - 4.7 * age;
-
-    // multiply by activity level value minus 500 calories (for weight loss)
-    return Math.round(maxCalories * activity.value - 500);
   };
 
   return (

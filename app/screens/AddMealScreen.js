@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, Image, FlatList, LogBox } from "react-native";
-import Toast from "react-native-toast-message";
+import React, { useContext, useEffect } from "react";
+import { StyleSheet, FlatList, LogBox } from "react-native";
 
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
@@ -11,6 +10,7 @@ import AppButton from "../components/AppButton";
 import useApi from "../hooks/useApi";
 import ProgressContext from "../context/progressContext";
 import { FloatingAction } from "react-native-floating-action";
+import { showToast } from "../utils/utils";
 LogBox.ignoreLogs(["Encountered two"]);
 
 function AddMealScreen({ navigation }) {
@@ -18,6 +18,7 @@ function AddMealScreen({ navigation }) {
   const { currentCalories, setCurrentCalories, mealHistory, setMealHistory } =
     useContext(ProgressContext);
 
+  // Retrieve meals from API when screen is focused.
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       loadMeals();
@@ -26,15 +27,7 @@ function AddMealScreen({ navigation }) {
     return unsubscribe;
   }, [navigation]);
 
-  const showToast = (message) => {
-    Toast.show({
-      type: "success",
-      text1: message,
-      position: "bottom",
-    });
-  };
-
-  const addMeal = (meal) => {
+  const addMealToMealHistory = (meal) => {
     setCurrentCalories(currentCalories + meal.calorieën);
     setMealHistory([
       ...mealHistory,
@@ -42,17 +35,13 @@ function AddMealScreen({ navigation }) {
     ]);
     showToast(`${meal.title} has been added!`);
   };
+
   const removeMeal = async (title) => {
-    console.log(title);
     const result = await mealsApi.deleteMeal(title);
-    console.log(result);
-    if (!result.ok) return;
+    if (!result.ok) return showToast("Error deleting meal.");
     loadMeals();
-    Toast.show({
-      type: "success",
-      text1: "Meal successfully deleted",
-      position: "bottom",
-    });
+
+    showToast("Meal successfully deleted");
   };
 
   return (
@@ -64,10 +53,9 @@ function AddMealScreen({ navigation }) {
         </>
       )}
       {meals && !meals.length > 0 && (
-        <>
-          <AppText style={styles.empty}>No meals exist yet...</AppText>
-        </>
+        <AppText style={styles.empty}>No meals exist yet...</AppText>
       )}
+
       <FlatList
         data={meals}
         keyExtractor={(meal) => meal.id.toString()}
@@ -76,7 +64,7 @@ function AddMealScreen({ navigation }) {
             title={item.title}
             subTitle={item.calorieën + " calorieën"}
             iconName={"plus-circle"}
-            onPress={() => addMeal(item)}
+            onPress={() => addMealToMealHistory(item)}
             renderRightActions={() => (
               <ListItemDeleteAction
                 onPress={() => {

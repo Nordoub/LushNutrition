@@ -2,13 +2,13 @@ import React, { useState, useRef } from "react";
 import { StyleSheet, Image, Keyboard } from "react-native";
 import authApi from "../api/auth";
 import AppText from "../components/AppText";
-import Toast from "react-native-toast-message";
 
 import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import Screen from "../components/Screen";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDeviceOrientation } from "@react-native-community/hooks";
 import { registerValidationSchema } from "../schemas/schemas";
+import { showToast } from "../utils/utils";
 
 function RegisterScreen({ navigation }) {
   const [registerFailed, setRegisterFailed] = useState(false);
@@ -17,20 +17,16 @@ function RegisterScreen({ navigation }) {
   const lastNameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  const submitRef = useRef(null);
 
   const handleSubmit = async ({ firstName, lastName, email, password }) => {
     const result = await authApi.register(firstName, lastName, email, password);
     if (!result.ok) return setRegisterFailed(true);
 
     setRegisterFailed(false);
-    Toast.show({
-      type: "success",
-      text1: "Registration succesful",
-      position: "bottom",
-    });
+    showToast("Registration succesfull");
     navigation.navigate("Login");
   };
+
   return (
     <KeyboardAwareScrollView>
       <Screen style={styles.container}>

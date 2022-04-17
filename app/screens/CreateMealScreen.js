@@ -2,17 +2,15 @@ import React, { useState, useRef } from "react";
 import { StyleSheet, Image, Keyboard } from "react-native";
 import mealsApi from "../api/meals";
 import AppText from "../components/AppText";
-import Toast from "react-native-toast-message";
 
 import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import Screen from "../components/Screen";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
+import { showToast } from "../utils/utils";
 import { createMealValidationSchema } from "../schemas/schemas";
 
 function CreateMealScreen({ navigation }) {
   const [createMealFailed, setCreateMealFailed] = useState(false);
-
   const calorieRef = useRef(null);
 
   const handleSubmit = async ({ title, calorieën }) => {
@@ -20,13 +18,11 @@ function CreateMealScreen({ navigation }) {
     if (!result.ok) return setCreateMealFailed(true);
 
     setCreateMealFailed(false);
-    Toast.show({
-      type: "success",
-      text1: "Meal successfully created",
-      position: "bottom",
-    });
+    showToast("Meal successfully created");
+
     navigation.goBack();
   };
+
   return (
     <KeyboardAwareScrollView>
       <Screen style={styles.container}>
@@ -41,7 +37,6 @@ function CreateMealScreen({ navigation }) {
         >
           <AppFormField
             autoCorrect={false}
-            //icon="account"
             name="title"
             placeholder="Meal name"
             returnKeyType="next"
@@ -51,7 +46,6 @@ function CreateMealScreen({ navigation }) {
           />
           <AppFormField
             autoCorrect={false}
-            //icon="account"
             name="calorieën"
             placeholder="Amount of calories"
             innerRef={calorieRef}

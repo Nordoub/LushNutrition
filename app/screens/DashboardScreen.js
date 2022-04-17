@@ -1,39 +1,26 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { FlatList, StyleSheet, LogBox } from "react-native";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 import ListItemSeperator from "../components/lists/ListItemSeperator";
-import { ListItem, ListItemDeleteAction } from "../components/lists";
+import { ListItem } from "../components/lists";
 import CircularProgress from "react-native-circular-progress-indicator";
 
-import { days, months } from "../constants/dates";
 import { mealTypes } from "../constants/mealTypes";
 import PersonalContext from "../context/personalContext";
 import ProgressContext from "../context/progressContext";
 import { useDeviceOrientation } from "@react-native-community/hooks";
-
+import { getDate } from "../utils/utils";
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
 ]);
-
-let today = new Date();
 
 function DashboardScreen({ navigation }) {
   const { maxCalories } = useContext(PersonalContext);
   const { currentCalories } = useContext(ProgressContext);
   const { landscape } = useDeviceOrientation();
 
-  const [date, setDate] = useState(
-    days[today.getDay()] +
-      ", " +
-      today.getDate() +
-      " " +
-      months[today.getMonth()]
-  );
-
-  const handlePress = () => {
-    navigation.navigate("AddMeal");
-  };
+  const [date, setDate] = useState(getDate());
 
   return (
     <Screen
@@ -62,7 +49,7 @@ function DashboardScreen({ navigation }) {
             title={item.title}
             subtitle={item.description}
             image={item.image}
-            onPress={handlePress}
+            onPress={() => navigation.navigate("AddMeal")}
             style={landscape ? { alignSelf: "flex-end", width: "80%" } : {}}
           />
         )}
@@ -75,14 +62,11 @@ function DashboardScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
-    // padding: 50,
     alignSelf: "center",
     width: "100%",
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-around",
-    // borderWidth: 1,
-    // borderColor: "black",
   },
   items: {
     width: "100%",

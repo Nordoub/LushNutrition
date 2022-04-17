@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import Screen from "../components/Screen";
 import ListItem from "../components/lists/ListItem";
@@ -11,8 +11,8 @@ import { useDeviceOrientation } from "@react-native-community/hooks";
 
 function AccountScreen() {
   const { user, setUser } = useContext(AuthContext);
-  const { maxCalories } = useContext(PersonalContext);
-  const { personalInfo } = useContext(PersonalContext);
+  const { maxCalories, personalInfo } = useContext(PersonalContext);
+
   const { landscape } = useDeviceOrientation();
 
   const logout = () => {
